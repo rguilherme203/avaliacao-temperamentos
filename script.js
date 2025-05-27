@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const totalQuestionsSpan = document.getElementById('total');
     const mainTemperamentDiv = document.getElementById('main-temperament');
     const temperamentDescDiv = document.getElementById('temperament-desc');
+    const temperamentGraphDiv = document.getElementById('temperament-graph');
 
     // Perguntas situacionais (4 para cada temperamento, total 16)
     const questions = [
@@ -47,26 +48,69 @@ document.addEventListener('DOMContentLoaded', function() {
         { text: "Nunca ajo assim", value: 0 }
     ];
 
-    // Descrições dos temperamentos
+    // Descrições completas dos temperamentos
     const temperamentDescriptions = {
         sanguineo: `
-            <strong>Sanguíneo:</strong> Você é comunicativo, espontâneo, otimista e adora estar entre pessoas. Tem facilidade para fazer amigos, é entusiasmado e contagia o ambiente com sua energia. Atenção: pode ser impulsivo e disperso, então busque equilíbrio para manter o foco em seus objetivos.
+            <strong>Sanguíneo</strong><br>
+            <b>Crenças:</b> "A vida é feita para ser vivida com alegria e intensidade." <br>
+            <b>Pontos positivos:</b> Comunicativo, entusiasmado, otimista, espontâneo, faz amigos com facilidade, contagia o ambiente com energia.<br>
+            <b>Pontos negativos:</b> Pode ser impulsivo, disperso, superficial, ter dificuldade em cumprir rotinas e compromissos.<br>
+            <b>Descrição:</b> O sanguíneo é movido por emoções e pelo contato social. Gosta de novidades, de conversar, de estar rodeado de pessoas e de ser o centro das atenções. Tem facilidade para se adaptar a ambientes novos e para motivar quem está ao redor. No entanto, pode perder o interesse rapidamente, procrastinar tarefas monótonas e ter dificuldade em lidar com críticas.<br>
+            <b>Dicas para melhor performance:</b>
+            <ul>
+                <li>Busque criar rotinas e listas para manter o foco em suas tarefas.</li>
+                <li>Pratique ouvir mais e falar menos em situações importantes.</li>
+                <li>Trabalhe a disciplina para concluir o que começa.</li>
+                <li>Valorize momentos de introspecção e autoconhecimento.</li>
+            </ul>
         `,
         colerico: `
-            <strong>Colérico:</strong> Você é determinado, prático, objetivo e gosta de liderar. Tem facilidade para tomar decisões e resolver problemas rapidamente. Atenção: pode ser impaciente ou autoritário, então lembre-se de ouvir os outros e praticar a empatia.
+            <strong>Colérico</strong><br>
+            <b>Crenças:</b> "Se eu não fizer, ninguém faz direito." <br>
+            <b>Pontos positivos:</b> Líder nato, determinado, objetivo, prático, rápido para tomar decisões, resiliente.<br>
+            <b>Pontos negativos:</b> Pode ser impaciente, autoritário, intolerante com erros, ter dificuldade em delegar.<br>
+            <b>Descrição:</b> O colérico é orientado para resultados e desafios. Gosta de liderar, resolver problemas e tomar decisões. Tem energia para iniciar projetos e motivar equipes, mas pode ser visto como controlador ou insensível. Costuma ser competitivo e não gosta de perder tempo.<br>
+            <b>Dicas para melhor performance:</b>
+            <ul>
+                <li>Pratique a empatia e a escuta ativa com colegas e familiares.</li>
+                <li>Aprenda a delegar e confiar no trabalho dos outros.</li>
+                <li>Gerencie o estresse com atividades físicas e momentos de lazer.</li>
+                <li>Valorize o processo, não só o resultado.</li>
+            </ul>
         `,
         melancolico: `
-            <strong>Melancólico:</strong> Você é analítico, detalhista, sensível e busca sempre a perfeição. Tem grande senso de responsabilidade e é muito leal. Atenção: pode ser autocrítico e se preocupar excessivamente, então valorize suas conquistas e pratique o autocuidado.
+            <strong>Melancólico</strong><br>
+            <b>Crenças:</b> "Tudo pode ser melhorado, inclusive eu." <br>
+            <b>Pontos positivos:</b> Analítico, detalhista, sensível, leal, responsável, busca a excelência.<br>
+            <b>Pontos negativos:</b> Pode ser autocrítico, pessimista, perfeccionista, ter dificuldade em lidar com mudanças.<br>
+            <b>Descrição:</b> O melancólico é movido pela busca da perfeição e do significado. Observa detalhes, planeja antes de agir e valoriza a profundidade nas relações. Tem grande senso de responsabilidade e ética, mas pode se cobrar demais e se frustrar com falhas. Prefere ambientes organizados e previsíveis.<br>
+            <b>Dicas para melhor performance:</b>
+            <ul>
+                <li>Pratique o autocuidado e celebre pequenas conquistas.</li>
+                <li>Permita-se errar e aprender com os erros.</li>
+                <li>Busque flexibilidade diante de mudanças inesperadas.</li>
+                <li>Compartilhe sentimentos e preocupações com pessoas de confiança.</li>
+            </ul>
         `,
         fleumatico: `
-            <strong>Fleumático:</strong> Você é calmo, paciente, equilibrado e evita conflitos. Tem facilidade para ouvir, é confiável e transmite segurança. Atenção: pode ser acomodado ou evitar mudanças, então desafie-se a sair da zona de conforto quando necessário.
+            <strong>Fleumático</strong><br>
+            <b>Crenças:</b> "Prefiro a paz do que a razão." <br>
+            <b>Pontos positivos:</b> Calmo, paciente, equilibrado, confiável, bom ouvinte, evita conflitos.<br>
+            <b>Pontos negativos:</b> Pode ser acomodado, procrastinador, ter dificuldade em tomar decisões e evitar mudanças.<br>
+            <b>Descrição:</b> O fleumático valoriza a harmonia e a estabilidade. É discreto, ponderado e transmite segurança. Tem facilidade para ouvir e mediar conflitos, mas pode evitar confrontos necessários e se acomodar em situações desconfortáveis. Prefere rotinas e ambientes tranquilos.<br>
+            <b>Dicas para melhor performance:</b>
+            <ul>
+                <li>Desafie-se a sair da zona de conforto e buscar novas experiências.</li>
+                <li>Pratique a assertividade para expressar suas opiniões.</li>
+                <li>Estabeleça metas e prazos para evitar procrastinação.</li>
+                <li>Valorize sua capacidade de mediar e unir pessoas.</li>
+            </ul>
         `
     };
 
     let currentQuestion = 0;
     let answers = [];
 
-    // Inicializar o quiz
     function initQuiz() {
         totalQuestionsSpan.textContent = questions.length;
         startBtn.addEventListener('click', startQuiz);
@@ -136,8 +180,27 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
+        // Porcentagens
+        const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
+        const perc = {};
+        for (let t in scores) {
+            perc[t] = Math.round((scores[t] / total) * 100);
+        }
+
         mainTemperamentDiv.textContent = `Seu temperamento predominante: ${capitalize(main)}`;
         temperamentDescDiv.innerHTML = temperamentDescriptions[main];
+
+        // Gráfico de barras
+        temperamentGraphDiv.innerHTML = `
+            <div class="bar-label">Sanguíneo: ${perc.sanguineo}%</div>
+            <div class="bar-container"><div class="bar bar-sanguineo" style="width:${perc.sanguineo}%">${perc.sanguineo > 10 ? perc.sanguineo + '%' : ''}</div></div>
+            <div class="bar-label">Colérico: ${perc.colerico}%</div>
+            <div class="bar-container"><div class="bar bar-colerico" style="width:${perc.colerico}%">${perc.colerico > 10 ? perc.colerico + '%' : ''}</div></div>
+            <div class="bar-label">Melancólico: ${perc.melancolico}%</div>
+            <div class="bar-container"><div class="bar bar-melancolico" style="width:${perc.melancolico}%">${perc.melancolico > 10 ? perc.melancolico + '%' : ''}</div></div>
+            <div class="bar-label">Fleumático: ${perc.fleumatico}%</div>
+            <div class="bar-container"><div class="bar bar-fleumatico" style="width:${perc.fleumatico}%">${perc.fleumatico > 10 ? perc.fleumatico + '%' : ''}</div></div>
+        `;
     }
 
     function restartQuiz() {
