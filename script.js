@@ -20,72 +20,108 @@ document.addEventListener('DOMContentLoaded', function() {
         fleumatico: 0
     };
     
-    // Perguntas do quiz
+    // 30 perguntas equilibradas
     const questions = [
         // Sanguíneo
-        { text: "Sou animado e entusiasmado.", type: "sanguineo" },
-        { text: "Gosto de estar no centro das atenções.", type: "sanguineo" },
-        { text: "Sou extrovertido e sociável.", type: "sanguineo" },
-        { text: "Faço amigos com facilidade.", type: "sanguineo" },
-        { text: "Sou otimista e alegre.", type: "sanguineo" },
+        { text: "Gosto de conversar com pessoas novas em qualquer ambiente.", type: "sanguineo" },
+        { text: "Sinto-me energizado em festas ou eventos sociais.", type: "sanguineo" },
+        { text: "Costumo ser otimista mesmo diante de dificuldades.", type: "sanguineo" },
         { text: "Gosto de contar histórias e fazer as pessoas rirem.", type: "sanguineo" },
         { text: "Sou espontâneo e expressivo.", type: "sanguineo" },
-        { text: "Tenho energia para atividades sociais.", type: "sanguineo" },
         { text: "Prefiro falar a escutar.", type: "sanguineo" },
-        { text: "Sou criativo e cheio de ideias.", type: "sanguineo" },
-        
+        { text: "Tenho facilidade para fazer amigos.", type: "sanguineo" },
+        { text: "Gosto de experimentar coisas novas.", type: "sanguineo" },
+
         // Colérico
-        { text: "Sou determinado e decidido.", type: "colerico" },
-        { text: "Gosto de liderar e tomar decisões.", type: "colerico" },
-        { text: "Sou prático e orientado para resultados.", type: "colerico" },
-        { text: "Tenho forte força de vontade.", type: "colerico" },
-        { text: "Sou independente e autossuficiente.", type: "colerico" },
-        { text: "Sou competitivo e gosto de desafios.", type: "colerico" },
+        { text: "Tomo a frente em situações de crise.", type: "colerico" },
+        { text: "Gosto de liderar projetos e equipes.", type: "colerico" },
+        { text: "Sinto-me motivado por desafios e metas ousadas.", type: "colerico" },
         { text: "Sou direto e franco ao me expressar.", type: "colerico" },
-        { text: "Tenho confiança nas minhas habilidades.", type: "colerico" },
-        { text: "Sou produtivo e eficiente.", type: "colerico" },
-        { text: "Tenho objetivos claros e trabalho para alcançá-los.", type: "colerico" },
-        
+        { text: "Tenho facilidade em tomar decisões rápidas.", type: "colerico" },
+        { text: "Gosto de competir e vencer.", type: "colerico" },
+        { text: "Consigo manter o foco em objetivos mesmo sob pressão.", type: "colerico" },
+        { text: "Prefiro agir a esperar.", type: "colerico" },
+
         // Melancólico
-        { text: "Sou perfeccionista e detalhista.", type: "melancolico" },
-        { text: "Gosto de analisar situações profundamente.", type: "melancolico" },
-        { text: "Sou sensível e emotivo.", type: "melancolico" },
-        { text: "Valorizo a qualidade e a excelência.", type: "melancolico" },
-        { text: "Sou organizado e metódico.", type: "melancolico" },
-        { text: "Tenho tendência a ser autocrítico.", type: "melancolico" },
+        { text: "Analiso profundamente antes de tomar decisões importantes.", type: "melancolico" },
+        { text: "Tenho medo de falhar e decepcionar os outros.", type: "melancolico" },
+        { text: "Busco perfeição em tudo que faço.", type: "melancolico" },
+        { text: "Sou sensível às críticas.", type: "melancolico" },
+        { text: "Gosto de planejar e organizar minhas tarefas.", type: "melancolico" },
+        { text: "Reflito bastante sobre minhas ações.", type: "melancolico" },
+        { text: "Tenho dificuldade em lidar com mudanças inesperadas.", type: "melancolico" },
         { text: "Aprecio arte, música e beleza.", type: "melancolico" },
-        { text: "Sou idealista e tenho altos padrões.", type: "melancolico" },
-        { text: "Reflito bastante antes de tomar decisões.", type: "melancolico" },
-        { text: "Sou leal e dedicado aos relacionamentos.", type: "melancolico" },
-        
+
         // Fleumático
-        { text: "Sou calmo e tranquilo.", type: "fleumatico" },
-        { text: "Evito conflitos e busco harmonia.", type: "fleumatico" },
-        { text: "Sou paciente e tolerante.", type: "fleumatico" },
-        { text: "Mantenho-me estável em situações de estresse.", type: "fleumatico" },
-        { text: "Sou bom ouvinte.", type: "fleumatico" },
-        { text: "Prefiro rotina e consistência.", type: "fleumatico" },
-        { text: "Sou discreto e reservado.", type: "fleumatico" },
-        { text: "Tenho facilidade para me adaptar a diferentes situações.", type: "fleumatico" },
-        { text: "Sou diplomático ao lidar com pessoas.", type: "fleumatico" },
-        { text: "Penso bem antes de falar ou agir.", type: "fleumatico" }
+        { text: "Prefiro evitar conflitos, mesmo que precise ceder.", type: "fleumatico" },
+        { text: "Sinto-me confortável em rotinas e ambientes estáveis.", type: "fleumatico" },
+        { text: "Tenho dificuldade em expressar emoções negativas.", type: "fleumatico" },
+        { text: "Sou paciente e tolerante com os outros.", type: "fleumatico" },
+        { text: "Adapto-me facilmente a diferentes situações.", type: "fleumatico" },
+        { text: "Costumo ser um bom ouvinte.", type: "fleumatico" },
+        { text: "Evito tomar decisões precipitadas.", type: "fleumatico" },
+        { text: "Procuro manter a harmonia nos relacionamentos.", type: "fleumatico" }
     ];
     
-    // Descrições dos temperamentos
-    const temperamentDescriptions = {
-        sanguineo: "O temperamento Sanguíneo é caracterizado por ser extrovertido, falante, entusiasmado e animado. Pessoas com este temperamento são sociáveis, otimistas e gostam de estar no centro das atenções. São criativas, expressivas e fazem amigos com facilidade. No entanto, podem ser impulsivas, desorganizadas e ter dificuldade em manter o foco em tarefas longas.",
-        
-        colerico: "O temperamento Colérico é caracterizado por ser determinado, decidido e orientado para objetivos. Pessoas com este temperamento são líderes naturais, práticas e eficientes. São independentes, confiantes e gostam de desafios. No entanto, podem ser impacientes, dominadoras e ter dificuldade em lidar com críticas.",
-        
-        melancolico: "O temperamento Melancólico é caracterizado por ser perfeccionista, detalhista e analítico. Pessoas com este temperamento são profundas, sensíveis e apreciam a beleza e a arte. São organizadas, leais e têm altos padrões. No entanto, podem ser autocríticas, pessimistas e ter dificuldade em lidar com mudanças.",
-        
-        fleumatico: "O temperamento Fleumático é caracterizado por ser calmo, pacífico e equilibrado. Pessoas com este temperamento são pacientes, diplomáticas e boas ouvintes. São adaptáveis, confiáveis e evitam conflitos. No entanto, podem ser passivas, indecisas e ter dificuldade em expressar emoções."
+    // Relatórios detalhados
+    const temperamentReports = {
+        sanguineo: {
+            description: "Você é comunicativo, otimista e adora estar com pessoas.",
+            beliefs: "Acredita que ser aceito é fundamental para ser feliz.",
+            fears: "Tem medo de rejeição e de ficar sozinho.",
+            desires: "Busca reconhecimento, diversão e conexões sociais.",
+            blocks: "Pode se dispersar facilmente e evitar tarefas monótonas.",
+            tips: [
+                "Pratique ouvir mais e falar menos.",
+                "Crie listas de tarefas para manter o foco.",
+                "Reserve momentos para reflexão pessoal.",
+                "Busque equilibrar lazer e responsabilidade."
+            ]
+        },
+        colerico: {
+            description: "Você é determinado, prático e gosta de liderar.",
+            beliefs: "Acredita que o sucesso depende da sua força de vontade.",
+            fears: "Tem medo de perder o controle ou ser visto como fraco.",
+            desires: "Busca desafios, conquistas e reconhecimento por resultados.",
+            blocks: "Pode ser impaciente, dominador e ter dificuldade em lidar com críticas.",
+            tips: [
+                "Exercite a empatia ouvindo opiniões diferentes.",
+                "Pratique a paciência em situações fora do seu controle.",
+                "Delegue tarefas e confie mais nos outros.",
+                "Valorize o processo, não só o resultado."
+            ]
+        },
+        melancolico: {
+            description: "Você é analítico, sensível e busca excelência.",
+            beliefs: "Acredita que precisa ser perfeito para ser valorizado.",
+            fears: "Tem medo de errar, ser criticado ou não corresponder às expectativas.",
+            desires: "Busca segurança, reconhecimento pela qualidade e harmonia interior.",
+            blocks: "Pode ser autocrítico, pessimista e ter dificuldade em lidar com mudanças.",
+            tips: [
+                "Aceite que o erro faz parte do aprendizado.",
+                "Experimente novas atividades sem buscar perfeição.",
+                "Compartilhe sentimentos com pessoas de confiança.",
+                "Celebre pequenas conquistas diárias."
+            ]
+        },
+        fleumatico: {
+            description: "Você é calmo, paciente e busca harmonia.",
+            beliefs: "Acredita que evitar conflitos é sempre o melhor caminho.",
+            fears: "Tem medo de desagradar ou causar desconforto aos outros.",
+            desires: "Busca estabilidade, paz e relacionamentos harmoniosos.",
+            blocks: "Pode ser passivo, indeciso e ter dificuldade em expressar emoções.",
+            tips: [
+                "Treine a assertividade, aprendendo a dizer 'não' quando necessário.",
+                "Busque sair da zona de conforto em pequenas situações.",
+                "Defina metas pessoais e acompanhe seu progresso.",
+                "Pratique expressar suas opiniões de forma gentil."
+            ]
+        }
     };
     
     // Inicializar o quiz
     function initQuiz() {
         totalQuestionsSpan.textContent = questions.length;
-        shuffleQuestions();
         startBtn.addEventListener('click', startQuiz);
         restartBtn.addEventListener('click', restartQuiz);
         
@@ -96,18 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Embaralhar as perguntas
-    function shuffleQuestions() {
-        for (let i = questions.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [questions[i], questions[j]] = [questions[j], questions[i]];
-        }
-    }
-    
     // Iniciar o quiz
     function startQuiz() {
         introSection.classList.remove('active');
         quizContainer.classList.add('active');
+        currentQuestion = 0;
+        Object.keys(scores).forEach(key => scores[key] = 0);
         loadQuestion();
     }
     
@@ -160,7 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsSection.classList.add('active');
         
         // Calcular as porcentagens
-        const maxPossibleScore = 30; // 10 perguntas por temperamento, máximo 3 pontos cada
+        const maxPossibleScore = 24; // 8 perguntas por temperamento, máximo 3 pontos cada
         const percentages = {
             sanguineo: Math.round((scores.sanguineo / maxPossibleScore) * 100),
             colerico: Math.round((scores.colerico / maxPossibleScore) * 100),
@@ -196,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
             highestScore = percentages.fleumatico;
         }
         
-        // Mostrar o temperamento dominante e sua descrição
+        // Mostrar o temperamento dominante e relatório detalhado
         const temperamentNames = {
             sanguineo: "Sanguíneo",
             colerico: "Colérico",
@@ -206,8 +236,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.getElementById('dominant-temperament').textContent = 
             `Seu temperamento predominante é: ${temperamentNames[dominantTemperament]} (${highestScore}%)`;
-        document.getElementById('temperament-description').textContent = 
-            temperamentDescriptions[dominantTemperament];
+        
+        const report = temperamentReports[dominantTemperament];
+        document.getElementById('temperament-report').innerHTML = `
+            <h4>Descrição:</h4>
+            <p>${report.description}</p>
+            <h4>Crenças:</h4>
+            <p>${report.beliefs}</p>
+            <h4>Medos:</h4>
+            <p>${report.fears}</p>
+            <h4>Anseios:</h4>
+            <p>${report.desires}</p>
+            <h4>Possíveis bloqueios:</h4>
+            <p>${report.blocks}</p>
+            <h4>Dicas para melhorar sua performance:</h4>
+            <ul>${report.tips.map(tip => `<li>${tip}</li>`).join('')}</ul>
+        `;
     }
     
     // Reiniciar o quiz
@@ -220,8 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         resultsSection.classList.remove('active');
         introSection.classList.add('active');
-        
-        shuffleQuestions();
     }
     
     // Inicializar o quiz quando a página carregar
