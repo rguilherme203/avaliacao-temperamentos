@@ -160,7 +160,32 @@ document.addEventListener('DOMContentLoaded', function() {
         progressBar.style.width = `${progress}%`;
     }
 
-    function showResults() {
+    function showResults()// Enviar dados para o Google Sheets via SheetDB
+const payload = {
+    data: [{
+        Nome: userData.nome,
+        Email: userData.email,
+        Telefone: userData.telefone,
+        Respostas: JSON.stringify(answers),
+        Sintomas: selectedSymptoms.join(', '),
+        Data: new Date().toLocaleString()
+    }]
+};
+
+fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+})
+.then(response => response.json())
+.then(data => {
+    // Opcional: mostrar mensagem de sucesso
+    console.log('Dados enviados para o banco:', data);
+})
+.catch(error => {
+    // Opcional: mostrar mensagem de erro
+    console.error('Erro ao enviar dados:', error);
+}); {
         quizContainer.classList.remove('active');
         resultsSection.classList.add('active');
 
