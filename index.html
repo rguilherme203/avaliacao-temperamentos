@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Avaliação de Temperamentos</title>
+    <title>Quiz de Temperamentos</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Avaliação de Temperamentos</h1>
-            <p>Descubra seu perfil de temperamento predominante</p>
+            <h1>Quiz de Temperamentos</h1>
+            <p>Descubra qual temperamento predomina em você respondendo situações do dia a dia!</p>
         </header>
 
         <div id="intro" class="section active">
-            <h2>Bem-vindo à Avaliação de Temperamentos</h2>
-            <p>Este quiz ajudará você a descobrir seu temperamento predominante entre: Sanguíneo, Colérico, Melancólico e Fleumático.</p>
-            <p>Responda todas as perguntas com sinceridade para obter um resultado mais preciso.</p>
+            <h2>Bem-vindo ao Quiz de Temperamentos</h2>
+            <p>Responda como você realmente agiria em cada situação, não como gostaria de agir.</p>
             <button id="start-btn" class="btn">Começar</button>
         </div>
 
@@ -24,52 +23,16 @@
             <div id="progress-bar">
                 <div id="progress"></div>
             </div>
-            <div id="question-number">Pergunta <span id="current">1</span> de <span id="total">30</span></div>
+            <div id="question-number">Pergunta <span id="current">1</span> de <span id="total">16</span></div>
             <div id="question-text"></div>
-            
-            <div class="options">
-                <button class="option-btn" data-value="3">Sempre ajo assim</button>
-                <button class="option-btn" data-value="2">Frequentemente ajo assim</button>
-                <button class="option-btn" data-value="1">Às vezes ajo assim</button>
-                <button class="option-btn" data-value="0">Nunca ajo assim</button>
-            </div>
+            <div class="options" id="options"></div>
         </div>
 
         <div id="results" class="section">
-            <h2>Seus Resultados</h2>
-            <div class="results-container">
-                <div class="result-item">
-                    <h3>Sanguíneo</h3>
-                    <div class="progress-bar">
-                        <div id="sanguineo-bar" class="progress-fill"></div>
-                    </div>
-                    <span id="sanguineo-score" class="score">0%</span>
-                </div>
-                <div class="result-item">
-                    <h3>Colérico</h3>
-                    <div class="progress-bar">
-                        <div id="colerico-bar" class="progress-fill"></div>
-                    </div>
-                    <span id="colerico-score" class="score">0%</span>
-                </div>
-                <div class="result-item">
-                    <h3>Melancólico</h3>
-                    <div class="progress-bar">
-                        <div id="melancolico-bar" class="progress-fill"></div>
-                    </div>
-                    <span id="melancolico-score" class="score">0%</span>
-                </div>
-                <div class="result-item">
-                    <h3>Fleumático</h3>
-                    <div class="progress-bar">
-                        <div id="fleumatico-bar" class="progress-fill"></div>
-                    </div>
-                    <span id="fleumatico-score" class="score">0%</span>
-                </div>
-            </div>
-            <div id="dominant-temperament"></div>
-            <div id="temperament-report"></div>
-            <button id="restart-btn" class="btn">Refazer o Teste</button>
+            <h2>Seu Resultado</h2>
+            <div id="main-temperament"></div>
+            <div id="temperament-desc"></div>
+            <button id="restart-btn" class="btn">Refazer o Quiz</button>
         </div>
     </div>
     <script src="script.js"></script>
