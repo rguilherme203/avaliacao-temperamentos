@@ -1,144 +1,193 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Elementos da interface
     const introSection = document.getElementById('intro');
     const quizContainer = document.getElementById('quiz-container');
     const resultsSection = document.getElementById('results');
-    const startBtn = document.getElementById('start-btn');
+    const userForm = document.getElementById('user-form');
+    const nomeInput = document.getElementById('nome');
+    const emailInput = document.getElementById('email');
+    const telefoneInput = document.getElementById('telefone');
     const restartBtn = document.getElementById('restart-btn');
     const questionText = document.getElementById('question-text');
     const optionsDiv = document.getElementById('options');
     const progressBar = document.getElementById('progress');
     const currentQuestionSpan = document.getElementById('current');
     const totalQuestionsSpan = document.getElementById('total');
-    const mainTemperamentDiv = document.getElementById('main-temperament');
-    const temperamentDescDiv = document.getElementById('temperament-desc');
-    const temperamentGraphDiv = document.getElementById('temperament-graph');
+    const phaseDiv = document.getElementById('phase');
+    const symptomsDiv = document.getElementById('symptoms');
+    const risksDiv = document.getElementById('risks');
+    const nutriDiv = document.getElementById('nutri');
 
-    // Perguntas situacionais (4 para cada temperamento, total 16)
-    const questions = [
-        // Sanguíneo
-        { text: "Você chega em uma festa onde não conhece quase ninguém. O que faz?", type: "sanguineo" },
-        { text: "Em uma reunião de trabalho, surge um momento de silêncio constrangedor. Como você reage?", type: "sanguineo" },
-        { text: "Ao encontrar um grupo de pessoas conversando animadamente, qual sua atitude?", type: "sanguineo" },
-        { text: "Quando recebe um convite inesperado para um evento social, como costuma agir?", type: "sanguineo" },
+    // Permitir apenas números no campo de telefone
+    telefoneInput.addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '');
+    });
 
-        // Colérico
-        { text: "Diante de um problema urgente no trabalho, qual sua primeira reação?", type: "colerico" },
-        { text: "Se um projeto está atrasado, o que você faz?", type: "colerico" },
-        { text: "Quando está em um grupo indeciso, como age?", type: "colerico" },
-        { text: "Se alguém discorda fortemente de você, como reage?", type: "colerico" },
-
-        // Melancólico
-        { text: "Ao receber uma crítica sobre seu trabalho, como reage?", type: "melancolico" },
-        { text: "Se precisa entregar um projeto importante, como se organiza?", type: "melancolico" },
-        { text: "Quando percebe um erro em algo que fez, o que faz?", type: "melancolico" },
-        { text: "Se precisa escolher entre várias opções, como decide?", type: "melancolico" },
-
-        // Fleumático
-        { text: "Se há um conflito entre amigos, como você age?", type: "fleumatico" },
-        { text: "Quando precisa esperar por muito tempo, como lida?", type: "fleumatico" },
-        { text: "Se alguém pede para você mudar seus planos, como reage?", type: "fleumatico" },
-        { text: "Ao ser pressionado a tomar uma decisão, o que faz?", type: "fleumatico" }
-    ];
-
-    // Opções de resposta
-    const options = [
-        { text: "Sempre ajo assim", value: 3 },
-        { text: "Frequentemente ajo assim", value: 2 },
-        { text: "Às vezes ajo assim", value: 1 },
-        { text: "Nunca ajo assim", value: 0 }
-    ];
-
-    // Descrições completas dos temperamentos
-    const temperamentDescriptions = {
-        sanguineo: `
-            <strong>Sanguíneo</strong><br>
-            <b>Crenças:</b> "A vida é feita para ser vivida com alegria e intensidade." <br>
-            <b>Pontos positivos:</b> Comunicativo, entusiasmado, otimista, espontâneo, faz amigos com facilidade, contagia o ambiente com energia.<br>
-            <b>Pontos negativos:</b> Pode ser impulsivo, disperso, superficial, ter dificuldade em cumprir rotinas e compromissos.<br>
-            <b>Descrição:</b> O sanguíneo é movido por emoções e pelo contato social. Gosta de novidades, de conversar, de estar rodeado de pessoas e de ser o centro das atenções. Tem facilidade para se adaptar a ambientes novos e para motivar quem está ao redor. No entanto, pode perder o interesse rapidamente, procrastinar tarefas monótonas e ter dificuldade em lidar com críticas.<br>
-            <b>Dicas para melhor performance:</b>
-            <ul>
-                <li>Busque criar rotinas e listas para manter o foco em suas tarefas.</li>
-                <li>Pratique ouvir mais e falar menos em situações importantes.</li>
-                <li>Trabalhe a disciplina para concluir o que começa.</li>
-                <li>Valorize momentos de introspecção e autoconhecimento.</li>
-            </ul>
-        `,
-        colerico: `
-            <strong>Colérico</strong><br>
-            <b>Crenças:</b> "Se eu não fizer, ninguém faz direito." <br>
-            <b>Pontos positivos:</b> Líder nato, determinado, objetivo, prático, rápido para tomar decisões, resiliente.<br>
-            <b>Pontos negativos:</b> Pode ser impaciente, autoritário, intolerante com erros, ter dificuldade em delegar.<br>
-            <b>Descrição:</b> O colérico é orientado para resultados e desafios. Gosta de liderar, resolver problemas e tomar decisões. Tem energia para iniciar projetos e motivar equipes, mas pode ser visto como controlador ou insensível. Costuma ser competitivo e não gosta de perder tempo.<br>
-            <b>Dicas para melhor performance:</b>
-            <ul>
-                <li>Pratique a empatia e a escuta ativa com colegas e familiares.</li>
-                <li>Aprenda a delegar e confiar no trabalho dos outros.</li>
-                <li>Gerencie o estresse com atividades físicas e momentos de lazer.</li>
-                <li>Valorize o processo, não só o resultado.</li>
-            </ul>
-        `,
-        melancolico: `
-            <strong>Melancólico</strong><br>
-            <b>Crenças:</b> "Tudo pode ser melhorado, inclusive eu." <br>
-            <b>Pontos positivos:</b> Analítico, detalhista, sensível, leal, responsável, busca a excelência.<br>
-            <b>Pontos negativos:</b> Pode ser autocrítico, pessimista, perfeccionista, ter dificuldade em lidar com mudanças.<br>
-            <b>Descrição:</b> O melancólico é movido pela busca da perfeição e do significado. Observa detalhes, planeja antes de agir e valoriza a profundidade nas relações. Tem grande senso de responsabilidade e ética, mas pode se cobrar demais e se frustrar com falhas. Prefere ambientes organizados e previsíveis.<br>
-            <b>Dicas para melhor performance:</b>
-            <ul>
-                <li>Pratique o autocuidado e celebre pequenas conquistas.</li>
-                <li>Permita-se errar e aprender com os erros.</li>
-                <li>Busque flexibilidade diante de mudanças inesperadas.</li>
-                <li>Compartilhe sentimentos e preocupações com pessoas de confiança.</li>
-            </ul>
-        `,
-        fleumatico: `
-            <strong>Fleumático</strong><br>
-            <b>Crenças:</b> "Prefiro a paz do que a razão." <br>
-            <b>Pontos positivos:</b> Calmo, paciente, equilibrado, confiável, bom ouvinte, evita conflitos.<br>
-            <b>Pontos negativos:</b> Pode ser acomodado, procrastinador, ter dificuldade em tomar decisões e evitar mudanças.<br>
-            <b>Descrição:</b> O fleumático valoriza a harmonia e a estabilidade. É discreto, ponderado e transmite segurança. Tem facilidade para ouvir e mediar conflitos, mas pode evitar confrontos necessários e se acomodar em situações desconfortáveis. Prefere rotinas e ambientes tranquilos.<br>
-            <b>Dicas para melhor performance:</b>
-            <ul>
-                <li>Desafie-se a sair da zona de conforto e buscar novas experiências.</li>
-                <li>Pratique a assertividade para expressar suas opiniões.</li>
-                <li>Estabeleça metas e prazos para evitar procrastinação.</li>
-                <li>Valorize sua capacidade de mediar e unir pessoas.</li>
-            </ul>
-        `
+    // Dados da usuária
+    let userData = {
+        nome: "",
+        email: "",
+        telefone: ""
     };
 
+    // Perguntas do quiz
+    const questions = [
+        { text: "Você percebeu mudanças no seu ciclo menstrual (irregularidade, espaçamento ou ausência)?", key: "ciclo", type: "single" },
+        { text: "Sente ondas de calor ou suores noturnos com frequência?", key: "calor", type: "single" },
+        { text: "Tem notado alterações de humor, ansiedade ou irritabilidade sem motivo aparente?", key: "humor", type: "single" },
+        { text: "Percebeu diminuição da libido ou desconforto nas relações sexuais?", key: "libido", type: "single" },
+        { text: "Tem dificuldade para dormir ou acorda várias vezes durante a noite?", key: "sono", type: "single" },
+        { text: "Sente dores articulares, musculares ou fadiga frequente?", key: "dor", type: "single" },
+        { text: "Notou ganho de peso, principalmente na região abdominal, mesmo sem grandes mudanças na alimentação?", key: "peso", type: "single" },
+        { 
+            text: "Selecione abaixo os sintomas que você sente atualmente:",
+            key: "sintomas",
+            type: "multi",
+            options: [
+                { label: "Ondas de calor", value: "calor" },
+                { label: "Insônia", value: "sono" },
+                { label: "Alterações de humor", value: "humor" },
+                { label: "Dores articulares/musculares", value: "dor" },
+                { label: "Ganho de peso", value: "peso" },
+                { label: "Diminuição da libido", value: "libido" },
+                { label: "Secura vaginal", value: "secura" },
+                { label: "Cansaço/fadiga", value: "fadiga" }
+            ]
+        }
+    ];
+
+    // Riscos por sintoma
+    const symptomRisks = {
+        calor: "Ondas de calor frequentes podem indicar maior risco de doenças cardiovasculares e prejudicam o sono, levando a fadiga e irritabilidade.",
+        sono: "A insônia crônica aumenta o risco de depressão, ansiedade, queda da imunidade e doenças metabólicas.",
+        humor: "Alterações de humor não tratadas podem evoluir para quadros de depressão e isolamento social.",
+        dor: "Dores articulares e musculares podem indicar início de osteoporose e perda de massa muscular, aumentando o risco de quedas e fraturas.",
+        peso: "Ganho de peso abdominal eleva o risco de diabetes, hipertensão e doenças do coração.",
+        libido: "Diminuição da libido e desconforto sexual podem afetar autoestima, relacionamentos e saúde emocional.",
+        secura: "Secura vaginal pode causar dor, infecções urinárias recorrentes e impacto negativo na vida sexual.",
+        fadiga: "Cansaço constante pode ser sinal de desequilíbrio hormonal, anemia ou problemas metabólicos, prejudicando a qualidade de vida."
+    };
+
+    // Respostas do usuário
     let currentQuestion = 0;
     let answers = [];
+    let selectedSymptoms = [];
 
+    // Fases e relatórios
+    function getPhaseAndReport(answers) {
+        // Pontuação total: quanto maior, mais sintomas e mais avançada a fase
+        const total = answers.reduce((a, b) => a + b, 0);
+
+        if (total <= 5) {
+            return {
+                phase: "Fase Inicial do Climatério",
+                symptoms: `Olá, ${userData.nome}! Você apresenta poucos sintomas ou sinais leves. É provável que esteja no início do climatério, quando as alterações hormonais começam, mas ainda não impactam fortemente o dia a dia.`,
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> Mesmo com sintomas leves, é fundamental buscar acompanhamento. O climatério pode evoluir rapidamente. Sem tratamento, há risco de agravamento dos sintomas, insônia, ansiedade, alterações do ciclo menstrual e desenvolvimento silencioso de doenças cardiovasculares, osteoporose e depressão. <br><br>
+                    <span style="color:#a259c6;font-weight:bold;">O acompanhamento nutricional especializado é essencial para prevenir complicações e promover um envelhecimento saudável, sem necessidade de remédios ou hormônios que podem trazer efeitos colaterais graves.</span>
+                `
+            };
+        } else if (total <= 12) {
+            return {
+                phase: "Climatério em Evolução",
+                symptoms: `Olá, ${userData.nome}! Você apresenta sintomas moderados, como alterações de humor, sono e ondas de calor. Isso indica que está em uma fase intermediária do climatério, com maior oscilação hormonal.`,
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> Os sintomas podem se intensificar rapidamente, afetando sua qualidade de vida, autoestima, relacionamentos e desempenho profissional. O não tratamento pode resultar em agravamento de insônia, ansiedade, depressão, dores articulares e fadiga crônica. Além disso, aumenta significativamente o risco de doenças cardiovasculares, osteoporose, perda de memória e alterações metabólicas, como ganho de peso e diabetes.<br><br>
+                    <span style="color:#a259c6;font-weight:bold;">Procure acompanhamento nutricional especializado para equilibrar hormônios e sintomas de forma natural, evitando medicamentos e hormônios sintéticos.</span>
+                `
+            };
+        } else {
+            return {
+                phase: "Menopausa Instalada",
+                symptoms: `Olá, ${userData.nome}! Você apresenta sintomas intensos e frequentes, típicos da menopausa. Isso indica que a produção hormonal já está bastante reduzida.`,
+                risks: `
+                    <strong>Riscos do não tratamento:</strong> A menopausa sem acompanhamento pode trazer consequências sérias e irreversíveis. O risco de doenças cardiovasculares (infarto, AVC), osteoporose com fraturas, depressão profunda, insônia crônica, perda de massa muscular e deterioração da saúde sexual é muito elevado. Além disso, sintomas como ondas de calor, suores noturnos, irritabilidade e fadiga podem se tornar incapacitantes, prejudicando sua autonomia e qualidade de vida.<br><br>
+                    <span style="color:#a259c6;font-weight:bold;">O acompanhamento nutricional é urgente e indispensável nesta fase! Uma alimentação adequada pode aliviar sintomas, prevenir doenças e evitar os efeitos colaterais de remédios e hormônios sintéticos.</span>
+                `
+            };
+        }
+    }
+
+    // Inicializar o quiz
     function initQuiz() {
         totalQuestionsSpan.textContent = questions.length;
-        startBtn.addEventListener('click', startQuiz);
+        userForm.addEventListener('submit', handleFormSubmit);
         restartBtn.addEventListener('click', restartQuiz);
     }
 
+    // Validação e início do quiz
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        const telefoneVal = telefoneInput.value.trim();
+        if (
+            !nomeInput.value.trim() ||
+            !emailInput.value.trim() ||
+            !telefoneVal ||
+            !/^\d{11}$/.test(telefoneVal)
+        ) {
+            alert("Por favor, preencha todos os campos corretamente. O telefone deve ter 11 dígitos, apenas números.");
+            return;
+        }
+        userData.nome = nomeInput.value.trim();
+        userData.email = emailInput.value.trim();
+        userData.telefone = telefoneVal;
+        startQuiz();
+    }
+
+    // Iniciar o quiz
     function startQuiz() {
         introSection.classList.remove('active');
         quizContainer.classList.add('active');
         currentQuestion = 0;
         answers = [];
+        selectedSymptoms = [];
         loadQuestion();
     }
 
+    // Carregar uma pergunta
     function loadQuestion() {
         optionsDiv.innerHTML = "";
+
         if (currentQuestion < questions.length) {
             questionText.textContent = questions[currentQuestion].text;
             currentQuestionSpan.textContent = currentQuestion + 1;
 
-            options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "option-btn";
-                btn.textContent = opt.text;
-                btn.setAttribute('data-value', opt.value);
-                btn.addEventListener('click', () => selectOption(btn));
-                optionsDiv.appendChild(btn);
-            });
+            if (questions[currentQuestion].type === "single") {
+                // Opções padrão
+                optionsDiv.innerHTML = `
+                    <button class="option-btn" data-value="3">Sempre</button>
+                    <button class="option-btn" data-value="2">Frequentemente</button>
+                    <button class="option-btn" data-value="1">Às vezes</button>
+                    <button class="option-btn" data-value="0">Nunca</button>
+                `;
+                document.querySelectorAll('.option-btn').forEach(button => {
+                    button.addEventListener('click', () => {
+                        selectOption(button);
+                    });
+                });
+            } else if (questions[currentQuestion].type === "multi") {
+                // Pergunta de múltipla escolha
+                const group = document.createElement('div');
+                group.className = "checkbox-group";
+                questions[currentQuestion].options.forEach(opt => {
+                    const label = document.createElement('label');
+                    label.innerHTML = `<input type="checkbox" value="${opt.value}"> ${opt.label}`;
+                    group.appendChild(label);
+                });
+                optionsDiv.appendChild(group);
+
+                // Botão para continuar
+                const nextBtn = document.createElement('button');
+                nextBtn.textContent = "Ver Resultado";
+                nextBtn.className = "btn";
+                nextBtn.style.marginTop = "20px";
+                nextBtn.addEventListener('click', () => {
+                    // Coletar sintomas selecionados
+                    selectedSymptoms = Array.from(group.querySelectorAll('input[type="checkbox"]:checked')).map(cb => cb.value);
+                    loadQuestion(++currentQuestion); // Avança para mostrar resultado
+                });
+                optionsDiv.appendChild(nextBtn);
+            }
 
             updateProgressBar();
         } else {
@@ -146,98 +195,93 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Selecionar uma opção
     function selectOption(button) {
+        // Registrar a resposta
         const value = parseInt(button.getAttribute('data-value'));
-        answers.push({ type: questions[currentQuestion].type, value });
+        answers.push(value);
+
+        // Avançar para a próxima pergunta após um breve delay
         setTimeout(() => {
             currentQuestion++;
             loadQuestion();
-        }, 200);
+        }, 300);
     }
 
+    // Atualizar a barra de progresso
     function updateProgressBar() {
         const progress = ((currentQuestion) / questions.length) * 100;
         progressBar.style.width = `${progress}%`;
     }
 
-    function showResults()// Enviar dados para o Google Sheets via SheetDB
-const payload = {
-    data: [{
-        Nome: userData.nome,
-        Email: userData.email,
-        Telefone: userData.telefone,
-        Respostas: JSON.stringify(answers),
-        Sintomas: selectedSymptoms.join(', '),
-        Data: new Date().toLocaleString()
-    }]
-};
-
-fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-})
-.then(response => response.json())
-.then(data => {
-    // Opcional: mostrar mensagem de sucesso
-    console.log('Dados enviados para o banco:', data);
-})
-.catch(error => {
-    // Opcional: mostrar mensagem de erro
-    console.error('Erro ao enviar dados:', error);
-}); {
+    function showResults() {
         quizContainer.classList.remove('active');
         resultsSection.classList.add('active');
 
-        // Soma por temperamento
-        const scores = { sanguineo: 0, colerico: 0, melancolico: 0, fleumatico: 0 };
-        answers.forEach(ans => {
-            scores[ans.type] += ans.value;
-        });
+        const report = getPhaseAndReport(answers);
 
-        // Descobre o temperamento principal
-        let main = "sanguineo";
-        let max = scores.sanguineo;
-        for (let t in scores) {
-            if (scores[t] > max) {
-                main = t;
-                max = scores[t];
-            }
+        phaseDiv.textContent = report.phase;
+        symptomsDiv.innerHTML = `<strong>Sintomas:</strong> ${report.symptoms}`;
+
+        // Riscos gerais + riscos por sintoma
+        let risksHTML = report.risks;
+        if (selectedSymptoms.length > 0) {
+            risksHTML += `<br><br><strong>Riscos específicos dos sintomas selecionados:</strong><ul>`;
+            selectedSymptoms.forEach(symp => {
+                if (symptomRisks[symp]) {
+                    risksHTML += `<li>${symptomRisks[symp]}</li>`;
+                }
+            });
+            risksHTML += `</ul>`;
         }
+        risksDiv.innerHTML = risksHTML;
 
-        // Porcentagens
-        const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
-        const perc = {};
-        for (let t in scores) {
-            perc[t] = Math.round((scores[t] / total) * 100);
-        }
-
-        mainTemperamentDiv.textContent = `Seu temperamento predominante: ${capitalize(main)}`;
-        temperamentDescDiv.innerHTML = temperamentDescriptions[main];
-
-        // Gráfico de barras
-        temperamentGraphDiv.innerHTML = `
-            <div class="bar-label">Sanguíneo: ${perc.sanguineo}%</div>
-            <div class="bar-container"><div class="bar bar-sanguineo" style="width:${perc.sanguineo}%">${perc.sanguineo > 10 ? perc.sanguineo + '%' : ''}</div></div>
-            <div class="bar-label">Colérico: ${perc.colerico}%</div>
-            <div class="bar-container"><div class="bar bar-colerico" style="width:${perc.colerico}%">${perc.colerico > 10 ? perc.colerico + '%' : ''}</div></div>
-            <div class="bar-label">Melancólico: ${perc.melancolico}%</div>
-            <div class="bar-container"><div class="bar bar-melancolico" style="width:${perc.melancolico}%">${perc.melancolico > 10 ? perc.melancolico + '%' : ''}</div></div>
-            <div class="bar-label">Fleumático: ${perc.fleumatico}%</div>
-            <div class="bar-container"><div class="bar bar-fleumatico" style="width:${perc.fleumatico}%">${perc.fleumatico > 10 ? perc.fleumatico + '%' : ''}</div></div>
+        nutriDiv.innerHTML = `
+            <div style="margin-top:20px; color:#7c2fa0; font-weight:bold;">
+                Recomendação: Procure um acompanhamento nutricional especializado.<br>
+                Uma alimentação adequada pode aliviar sintomas, prevenir doenças e melhorar sua qualidade de vida de forma natural, sem necessidade de remédios ou hormônios que podem trazer efeitos colaterais graves.
+            </div>
         `;
+
+        // Enviar dados para o Google Sheets via SheetDB
+        const payload = {
+            data: [{
+                Nome: userData.nome,
+                Email: userData.email,
+                Telefone: userData.telefone,
+                Respostas: JSON.stringify(answers),
+                Sintomas: selectedSymptoms.join(', '),
+                Data: new Date().toLocaleString()
+            }]
+        };
+
+        fetch('https://sheetdb.io/api/v1/x6jebjfxepf9n', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Opcional: mostrar mensagem de sucesso
+            console.log('Dados enviados para o banco:', data);
+        })
+        .catch(error => {
+            // Opcional: mostrar mensagem de erro
+            console.error('Erro ao enviar dados:', error);
+        });
     }
 
+    // Reiniciar o quiz
     function restartQuiz() {
         currentQuestion = 0;
         answers = [];
+        selectedSymptoms = [];
         resultsSection.classList.remove('active');
         introSection.classList.add('active');
+        // Limpa os campos do formulário
+        userForm.reset();
     }
 
-    function capitalize(str) {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    }
-
+    // Inicializar o quiz quando a página carregar
     initQuiz();
 });
