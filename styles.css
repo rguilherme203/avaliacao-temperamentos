@@ -139,10 +139,49 @@ h1 {
     text-align: left;
 }
 
+#temperament-graph {
+    margin: 30px 0 10px 0;
+    padding: 20px 10px 10px 10px;
+    background: #f8f0fa;
+    border-radius: 10px;
+    text-align: left;
+}
+.bar-label {
+    font-weight: bold;
+    color: #7c2fa0;
+    margin-bottom: 2px;
+    font-size: 15px;
+}
+.bar-container {
+    width: 100%;
+    background: #e0d7f3;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+}
+.bar {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.7s;
+    color: #fff;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 15px;
+}
+.bar-sanguineo { background: #a259c6; }
+.bar-colerico { background: #e67e22; }
+.bar-melancolico { background: #3498db; }
+.bar-fleumatico { background: #27ae60; }
+
 @media (max-width: 600px) {
     .container {
         margin-top: 10px;
         margin-bottom: 10px;
         padding: 10px;
     }
+    #temperament-graph { padding: 10px 2px 2px 2px; }
 }
